@@ -157,7 +157,11 @@ class TargetManager extends ProtocolEventEmitter {
       this._targetIdToTargets.set(targetId, targetWithSession);
 
       // We want to receive information about network requests from iframes, so enable the Network domain.
-      await newSession.sendCommand('Network.enable');
+      try {
+        await newSession.sendCommand('Network.enable'); }
+      catch (err) {
+        console.log(err.message);
+      };
       // We also want to receive information about subtargets of subtargets, so make sure we autoattach recursively.
       await newSession.sendCommand('Target.setAutoAttach', {
         autoAttach: true,
